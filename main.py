@@ -3,7 +3,7 @@ from dataProcessing import load_file, save_file, plot_source, plot_k_history
 import numpy as np
 import argparse
 from sklearn.decomposition import FastICA
-
+# Modified by: Christopher Williams
 
 def cal_similarity(origin_s, seperate_s):
     '''
@@ -44,7 +44,9 @@ def cal_pi(G):
 if __name__ == '__main__':
     # get argument from terminal
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', required=True, help='ICA_mix | Speech ')
+    # parser.add_argument('--dataset', required=True, help='ICA_mix | Speech ')
+    # Change default in --dataset argument to the correct dataset to run without it in the terminal, else : run in terminal "python main.py --dataset=CC_mix --ICA_model=All --eval=True ""
+    parser.add_argument('--dataset', default='ml mixture',  help='ICA_mix | Speech ')
     parser.add_argument('--ICA_model', type=str, default='All',
                         help='All | kurtosis_ICA | negentropy_ICA | infomax_ICA')
     parser.add_argument('--fast', type=str, default='False',
@@ -53,7 +55,7 @@ if __name__ == '__main__':
                         help='True | False, calculate the evaluation functions for each result')
     parser.add_argument('--nonlinear', type=str, default='logconsh',
                         help='logconsh | cube | exp')
-    parser.add_argument('--max_iterate', type=int, default=500,
+    parser.add_argument('--max_iterate', type=int, default=1000,
                         help='max number of iterate')
     parser.add_argument('--k_eta', type=float, default=0.1,
                         help='eta for kurtosis ICA')
@@ -72,7 +74,7 @@ if __name__ == '__main__':
     else:
         opt.eval = False
 
-    # decide sataset
+    # decide dataset
     filename = []
     if opt.dataset == 'ICA_mix':
         for i in range(1, 4):
@@ -95,6 +97,31 @@ if __name__ == '__main__':
         # Plot input data
         plot_source(Time_1, origin_data.T, 'Input data')
         print('Finish loading Speech')
+    elif opt.dataset == 'CC_mix':
+        for i in range(1, 4):
+            filename.append(f'data/CC Mix {i}.wav')
+        Source_1, Time_1, params_1 = load_file(filename[0])
+        Source_2, Time_2, params_2 = load_file(filename[1])
+        Source_3, Time_3, params_3 = load_file(filename[2])
+        data = np.vstack((Source_1[np.newaxis, :], Source_2[np.newaxis, :]))
+        data = np.vstack((data, Source_3[np.newaxis, :]))
+        print('Finish loading CC_mix')
+    elif opt.dataset == 'mixture':
+        for i in range(1, 4):
+            filename.append(f'data/mixture {i}.wav')
+        Source_1, Time_1, params_1 = load_file(filename[0])
+        Source_2, Time_2, params_2 = load_file(filename[1])
+        Source_3, Time_3, params_3 = load_file(filename[2])
+        data = np.vstack((Source_1[np.newaxis, :], Source_2[np.newaxis, :]))
+        data = np.vstack((data, Source_3[np.newaxis, :]))
+        print('Finish loading TTU mix')
+    elif opt.dataset == 'ml mixture':
+        for i in range(1, 3):
+            filename.append(f'data/ml mixture {i}.wav')
+        Source_1, Time_1, params_1 = load_file(filename[0])
+        Source_2, Time_2, params_2 = load_file(filename[1])
+        data = np.vstack((Source_1[np.newaxis, :], Source_2[np.newaxis, :]))
+        print('Finish loading TTU mix')
     else:
         print(opt.dataset + 'dataset is not exist!')
     # Plot input data
@@ -114,7 +141,7 @@ if __name__ == '__main__':
         plot_source(Time_1, S3, 'Result of Infomax natural gradient descent ICA')
         print('Finish plotting')
         print('Saving result')
-        for i in range(1, data.shape[0]):
+        for i in range(1, data.shape[0]+1):
             save_file(f'result/{opt.dataset}_kurtosis_ICA_result_{i}_{x}_fast.wav', params_1, S1[:, i - 1])
             save_file(f'result/{opt.dataset}_fast_ICA_result_{i}.wav', params_1, S2[:, i - 1])
             save_file(f'result/{opt.dataset}_Infomax_nature_ICA_result_{i}.wav', params_1, S3[:, i - 1])
