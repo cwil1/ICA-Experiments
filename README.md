@@ -1,6 +1,9 @@
 # ICA Experiments
 Audio unmixing and source separation using ICA<br/>
-
+# Credit
+Forked from Gengze Zhou: https://github.com/GengzeZhou/ICA-Experiments.git
+# Edit Credit
+Minor Edits by Christopher Williams
 ## Introduction of each file:<br/>
 main.py: work flow of  experiments<br/>
 FastICA.py: all implements of ICA algorithms(negentropy_fastICA, Infomax_nature_ICA, kurtosis_ICA)<br/>
