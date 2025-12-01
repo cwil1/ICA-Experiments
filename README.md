@@ -19,6 +19,7 @@ other candidate arguments show in main.py line 46-64<br/>
 
 # Project Results
 Audio mixes are contained in the data folder. 
+Original Audio Files are contained in the Original Audio folder.
 Results from the project are contained in the results folder.
 
 ## Experiments environments
