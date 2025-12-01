@@ -18,8 +18,8 @@ run on terminal for ICA mix dataset:python main.py --dataset=ICA_mix --ICA_model
 other candidate arguments show in main.py line 46-64<br/>
 
 # Project Results
-Audio mixes are contained in the data folder
-Results from the project are contained in the results folder
+Audio mixes are contained in the data folder. 
+Results from the project are contained in the results folder.
 
 ## Experiments environments
 python 3.8.5 (at least >3.6)<br/>
